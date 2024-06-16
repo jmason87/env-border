@@ -4,22 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extension Popup</title>
-    <style>
-        body {
-            width: 200px;
-            padding: 10px;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
     <h1>Env Border</h1>
     <p>Set the domains for you different dev environments. For example, 
         if your qe environment is "https://qe.mySite.com", you can set qe to "qe.mySite". 
-        Any URL that string will have a yellow border around the page.</p>
-    <input type="text" id="local" placeholder="Local Domain">
-    <input type="text" id="qe" placeholder="QE Domain">
-    <input type="text" id="prod" placeholder="Prod Domain">
+        Any URL that string will have a yellow border around the page.
+    </p>
+    <hr>
+
+    <p class="input-label">Enter Local Domain</p> 
+    <div class="input-prefix">
+        <span>http://</span>
+        <input type="text" id="local" placeholder="Local Domain">
+    </div>
+    <hr> 
+    
+    <p class="input-label">Enter QE Domain</p> 
+    <div class="input-prefix">
+        <span>https://</span>
+        <input type="text" id="qe" placeholder="QE Domain">
+    </div>
+    <hr> 
+    
+    <p class="input-label">Enter Prod Domain</p>
+    <div class="input-prefix">
+        <span>https://</span>
+        <input type="text" id="prod" placeholder="Prod Domain">
+    </div>
+    <hr>
+    
     <button id="save">Save</button>
     <button id="toggleExtensionOn">On</button>
     <button id="toggleExtensionOff">Off</button>

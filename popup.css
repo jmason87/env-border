@@ -1,0 +1,18 @@
+body {
+    width: 200px;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+}
+
+.input-prefix {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adjust spacing between input groups */
+}
+.input-prefix span {
+    margin-right: 2px; /* Spacing between the prefix and the input */
+}
+
+.input-label {
+    margin-bottom: 5px;
+}
