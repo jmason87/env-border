@@ -5,7 +5,12 @@
     "description": "Adds a color border to the window based on the URL.",
     "permissions": ["activeTab", "scripting", "storage"],
     "action": {
-        "default_popup": "popup.html"
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/env-border-icon16.jpeg",
+            "48": "images/env-border-icon48.jpg",
+            "128": "images/env-border-icon128.jpg"
+        }
     },
     "background": {
         "service_worker": "background.js"
