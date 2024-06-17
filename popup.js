@@ -1,13 +1,17 @@
-document.getElementById('toggleExtensionOn').addEventListener('click', function() {
-    getURLs(function(urls) {
-        sendMessageToContentScript({extensionEnabled: true, ...urls});
-    });
-});
+let extensionEnabled = true;
 
-document.getElementById('toggleExtensionOff').addEventListener('click', function() {
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleExtension = document.getElementById('toggleExtension');
+    toggleExtension.textContent = "Disable Extension";
+});
+document.getElementById('toggleExtension').addEventListener('click', function() {
+    // Assuming extensionEnabled is a global variable or stored in a way accessible here
+    extensionEnabled = !extensionEnabled; // Toggle the state
     getURLs(function(urls) {
-        sendMessageToContentScript({extensionEnabled: false, ...urls});
+        sendMessageToContentScript({extensionEnabled: extensionEnabled, ...urls});
     });
+    // Update the button text based on the new state
+    this.textContent = extensionEnabled ? "Disable Extension" : "Enable Extension";
 });
 
 document.getElementById('save').addEventListener('click', function() {
@@ -21,7 +25,6 @@ document.getElementById('save').addEventListener('click', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Retrieve the stored values
     chrome.storage.local.get(['local', 'qe', 'prod'], function(result) {
         // Check if the value exists before setting it to avoid undefined errors
         if (result.local !== undefined) {

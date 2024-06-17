@@ -8,36 +8,34 @@
 </head>
 <body>
     <h1>Env Border</h1>
-    <p>Set the domains for you different dev environments. For example, 
-        if your qe environment is "https://qe.mySite.com", you can set qe to "qe.mySite". 
-        Any URL that string will have a yellow border around the page.
+    <button id="toggleExtension"></button>
+    <p>You can set your different environment domains here. Click the save button to save the changes.
+        This extension will add a border to the browser window to indicate the environment you are currently in if the URL you're on includes the domain you've set here.
     </p>
     <hr>
 
-    <p class="input-label">Enter Local Domain</p> 
+    <p class="input-label">Local Domain</p> 
     <div class="input-prefix">
         <span>http://</span>
         <input type="text" id="local" placeholder="Local Domain">
     </div>
     <hr> 
     
-    <p class="input-label">Enter QE Domain</p> 
+    <p class="input-label">QE Domain</p> 
     <div class="input-prefix">
         <span>https://</span>
         <input type="text" id="qe" placeholder="QE Domain">
     </div>
     <hr> 
     
-    <p class="input-label">Enter Prod Domain</p>
+    <p class="input-label">Prod Domain</p>
     <div class="input-prefix">
         <span>https://</span>
         <input type="text" id="prod" placeholder="Prod Domain">
     </div>
     <hr>
-    
+
     <button id="save">Save</button>
-    <button id="toggleExtensionOn">On</button>
-    <button id="toggleExtensionOff">Off</button>
     <script src="popup.js"></script>
 </body>
 </html>
