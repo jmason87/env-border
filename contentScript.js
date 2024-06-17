@@ -12,7 +12,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             createBorder('right', color);
             createBorder('bottom', color);
             createBorder('left', color);
-        } else if (window.location.href.includes(`https://${message.value.local}`)) {
+        } else if (window.location.href.includes(`http://${message.value.local}`)) {
             const color = 'rgba(0, 128, 0)'; // green
             createBorder('top', color);
             createBorder('right', color);
