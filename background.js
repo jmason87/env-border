@@ -1,7 +1,9 @@
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete' && tab.active) {
-        getURLs(function(urls) {
-            sendMessageToContentScript(tabId, {extensionEnabled: true, ...urls});
+        chrome.storage.local.get(['extensionEnabled'], function(result) {
+            getURLs(function(urls) {
+                sendMessageToContentScript(tabId, {extensionEnabled: result.extensionEnabled, ...urls});
+            });
         });
     }
 });
