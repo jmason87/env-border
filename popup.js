@@ -1,17 +1,23 @@
-let extensionEnabled = true;
-
 document.addEventListener('DOMContentLoaded', function() {
     const toggleExtension = document.getElementById('toggleExtension');
-    toggleExtension.textContent = "Disable Extension";
-});
-document.getElementById('toggleExtension').addEventListener('click', function() {
-    // Assuming extensionEnabled is a global variable or stored in a way accessible here
-    extensionEnabled = !extensionEnabled; // Toggle the state
-    getURLs(function(urls) {
-        sendMessageToContentScript({extensionEnabled: extensionEnabled, ...urls});
+    
+    chrome.storage.local.get(['extensionEnabled'], function(result) {
+        let extensionEnabled = result.extensionEnabled !== undefined ? result.extensionEnabled : false;
+        toggleExtension.textContent = extensionEnabled ? "Disable Extension" : "Enable Extension";
     });
-    // Update the button text based on the new state
-    this.textContent = extensionEnabled ? "Disable Extension" : "Enable Extension";
+
+    toggleExtension.addEventListener('click', function() {
+        chrome.storage.local.get(['extensionEnabled'], function(result) {
+            let newEnabled = !result.extensionEnabled;
+            
+            chrome.storage.local.set({extensionEnabled: newEnabled}, function() {
+                getURLs(function(urls) {
+                    sendMessageToContentScript({extensionEnabled: newEnabled, ...urls});
+                });
+                toggleExtension.textContent = newEnabled ? "Disable Extension" : "Enable Extension";
+            });
+        });
+    });
 });
 
 document.getElementById('save').addEventListener('click', function() {
@@ -26,7 +32,7 @@ document.getElementById('save').addEventListener('click', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.local.get(['local', 'qe', 'prod'], function(result) {
-        // Check if the value exists before setting it to avoid undefined errors
+
         if (result.local !== undefined) {
             document.getElementById('local').value = result.local;
         }
