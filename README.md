@@ -13,11 +13,15 @@ Env Border is a Chrome extension designed to enhance your web development workfl
 
 ## Installation
 
-1. Download the extension from the Chrome Web Store. (Link to be added upon store approval)
-2. Navigate to `chrome://extensions` in your Chrome browser.
-3. Ensure that the "Developer mode" toggle at the top-right is turned on.
-4. Click "Load unpacked" and select the folder where you downloaded the extension.
-5. The extension should now be installed and will appear in your extensions list.
+1. Download the extension from the Chrome Web Store. [Env Border](https://chromewebstore.google.com/detail/env-border/imioapnclmdfnmoaackmnfnkinlojhng)
+
+OR
+
+1. Clone this repo
+1. Navigate to `chrome://extensions` in your Chrome browser.
+2. Ensure that the "Developer mode" toggle at the top-right is turned on.
+3. Click "Load unpacked" and select the folder where you cloned this repo.
+4. The extension should now be installed and will appear in your extensions list.
 
 ## Usage
 
