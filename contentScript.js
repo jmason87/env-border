@@ -9,14 +9,14 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     // Normalize a user-entered domain: strip protocol, path, port and trailing slashes
     function normalizeDomain(input) {
         if (!isNonEmptyString(input)) return '';
-        return input.trim().replace(/^https?:\/\//i, '').replace(/\/.*$/, '').replace(/:\d+$/, '');
+        return input.trim().replace(/^https?:\/\//i, '').replace(/\/.*$/, '').replace(/:\d+$/, '').toLowerCase();
     }
 
     // Check if the current page hostname matches (or is a subdomain of) the provided domain
     function hostnameMatchesDomain(domain) {
         const norm = normalizeDomain(domain);
         if (!isNonEmptyString(norm)) return false;
-        const hostname = window.location.hostname; // excludes port
+        const hostname = window.location.hostname.toLowerCase(); // excludes port
         return hostname === norm || hostname.endsWith('.' + norm);
     }
 
@@ -24,17 +24,27 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         // Remove any existing borders first to avoid duplicates
         removeBorders();
 
-        // Priority: prod -> staging -> qe -> local
-        if (hostnameMatchesDomain(value.prod)) {
-            createAllBorders('rgba(255, 0, 0)'); // red
-        } else if (hostnameMatchesDomain(value.staging)) {
-            createAllBorders('rgba(240, 128, 0)'); // orange
-        } else if (hostnameMatchesDomain(value.qe)) {
-            createAllBorders('rgba(255, 255, 0)'); // yellow
-        } else if (hostnameMatchesDomain(value.local)) {
-            createAllBorders('rgba(0, 128, 0)'); // green
+        // Choose the most specific (longest) matching domain among configured envs
+        var hostname = window.location.hostname.toLowerCase();
+        var envCandidates = [];
+        var envs = [
+            {key: 'prod', domain: normalizeDomain(value.prod), color: 'rgba(255, 0, 0)'} ,
+            {key: 'staging', domain: normalizeDomain(value.staging), color: 'rgba(240, 128, 0)'},
+            {key: 'qe', domain: normalizeDomain(value.qe), color: 'rgba(255, 255, 0)'},
+            {key: 'local', domain: normalizeDomain(value.local), color: 'rgba(0, 128, 0)'}
+        ];
+
+        envs.forEach(function(e) {
+            if (!isNonEmptyString(e.domain)) return;
+            if (hostname === e.domain || hostname.endsWith('.' + e.domain)) {
+                envCandidates.push({key: e.key, domain: e.domain, len: e.domain.length, color: e.color});
+            }
+        });
+
+        if (envCandidates.length > 0) {
+            envCandidates.sort(function(a,b) { return b.len - a.len; });
+            createAllBorders(envCandidates[0].color);
         } else {
-            // No match
             removeBorders();
         }
     } else {
