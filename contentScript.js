@@ -12,14 +12,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         return input.trim().replace(/^https?:\/\//i, '').replace(/\/.*$/, '').replace(/:\d+$/, '').toLowerCase();
     }
 
-    // Check if the current page hostname matches (or is a subdomain of) the provided domain
-    function hostnameMatchesDomain(domain) {
-        const norm = normalizeDomain(domain);
-        if (!isNonEmptyString(norm)) return false;
-        const hostname = window.location.hostname.toLowerCase(); // excludes port
-        return hostname === norm || hostname.endsWith('.' + norm);
-    }
-
     if (value.extensionEnabled) {
         // Remove any existing borders first to avoid duplicates
         removeBorders();
