@@ -24,6 +24,7 @@ document.getElementById('save').addEventListener('click', function() {
     const data = {
         local: document.getElementById('local').value, 
         qe: document.getElementById('qe').value, 
+        staging: document.getElementById('staging').value, 
         prod: document.getElementById('prod').value,
     };
 
@@ -31,13 +32,16 @@ document.getElementById('save').addEventListener('click', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    chrome.storage.local.get(['local', 'qe', 'prod'], function(result) {
+    chrome.storage.local.get(['local', 'qe', 'staging', 'prod'], function(result) {
 
         if (result.local !== undefined) {
             document.getElementById('local').value = result.local;
         }
         if (result.qe !== undefined) {
             document.getElementById('qe').value = result.qe;
+        }
+        if (result.qe !== undefined) {
+            document.getElementById('staging').value = result.staging;
         }
         if (result.prod !== undefined) {
             document.getElementById('prod').value = result.prod;
@@ -46,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function getURLs(callback) {
-    chrome.storage.local.get(['local', 'qe', 'prod'], function(result) {
+    chrome.storage.local.get(['local', 'qe', 'staging', 'prod'], function(result) {
         callback(result);
     });
 }
