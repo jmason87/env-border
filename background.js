@@ -17,7 +17,7 @@ function sendMessageToContentScript(tabId, value) {
 }
 
 function getURLs(callback) {
-    chrome.storage.local.get(['local', 'qe', 'prod'], function(result) {
+    chrome.storage.local.get(['local', 'qe', 'staging', 'prod'], function(result) {
         callback(result);
     });
 }

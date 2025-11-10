@@ -1,58 +1,66 @@
+function isNonEmptyString(s) {
+    return typeof s === 'string' && s.trim().length > 0;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    const toggleExtension = document.getElementById('toggleExtension');
-    
-    chrome.storage.local.get(['extensionEnabled'], function(result) {
-        let extensionEnabled = result.extensionEnabled !== undefined ? result.extensionEnabled : false;
-        toggleExtension.textContent = extensionEnabled ? "Disable Extension" : "Enable Extension";
+    const toggleBtn = document.getElementById('toggleBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const saveStatus = document.getElementById('saveStatus');
+    const extStatus = document.getElementById('extStatus');
+
+    // Load stored values
+    chrome.storage.local.get(['extensionEnabled','local','qe','staging','prod'], function(result) {
+        const extensionEnabled = result.extensionEnabled !== undefined ? result.extensionEnabled : false;
+        toggleBtn.textContent = extensionEnabled ? 'Disable Extension' : 'Enable Extension';
+        toggleBtn.classList.toggle('enabled', extensionEnabled);
+        extStatus.textContent = extensionEnabled ? 'Enabled' : 'Disabled';
+        extStatus.classList.toggle('enabled', extensionEnabled);
+
+        if (isNonEmptyString(result.local)) document.getElementById('local').value = result.local;
+        if (isNonEmptyString(result.qe)) document.getElementById('qe').value = result.qe;
+        if (isNonEmptyString(result.staging)) document.getElementById('staging').value = result.staging;
+        if (isNonEmptyString(result.prod)) document.getElementById('prod').value = result.prod;
     });
 
-    toggleExtension.addEventListener('click', function() {
-        chrome.storage.local.get(['extensionEnabled'], function(result) {
-            let newEnabled = !result.extensionEnabled;
-            
+    toggleBtn.addEventListener('click', function() {
+        chrome.storage.local.get(['extensionEnabled','local','qe','staging','prod'], function(result) {
+            const newEnabled = !result.extensionEnabled;
             chrome.storage.local.set({extensionEnabled: newEnabled}, function() {
-                getURLs(function(urls) {
-                    sendMessageToContentScript({extensionEnabled: newEnabled, ...urls});
-                });
-                toggleExtension.textContent = newEnabled ? "Disable Extension" : "Enable Extension";
+                toggleBtn.textContent = newEnabled ? 'Disable Extension' : 'Enable Extension';
+                toggleBtn.classList.toggle('enabled', newEnabled);
+                extStatus.textContent = newEnabled ? 'Enabled' : 'Disabled';
+                extStatus.classList.toggle('enabled', newEnabled);
+                // Notify active tab
+                sendMessageToContentScript({extensionEnabled: newEnabled, local: result.local, qe: result.qe, staging: result.staging, prod: result.prod});
+                // no preview update needed
+            });
+        });
+    });
+
+    saveBtn.addEventListener('click', function() {
+        const data = {
+            local: document.getElementById('local').value.trim(),
+            qe: document.getElementById('qe').value.trim(),
+            staging: document.getElementById('staging').value.trim(),
+            prod: document.getElementById('prod').value.trim()
+        };
+        chrome.storage.local.set(data, function() {
+            saveStatus.hidden = false;
+            setTimeout(function() { saveStatus.hidden = true; }, 1500);
+            chrome.storage.local.get(['extensionEnabled'], function(r) {
+                sendMessageToContentScript({extensionEnabled: r.extensionEnabled, ...data});
             });
         });
     });
 });
 
-document.getElementById('save').addEventListener('click', function() {
-    const data = {
-        local: document.getElementById('local').value, 
-        qe: document.getElementById('qe').value, 
-        prod: document.getElementById('prod').value,
-    };
-
-    chrome.storage.local.set(data);
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    chrome.storage.local.get(['local', 'qe', 'prod'], function(result) {
-
-        if (result.local !== undefined) {
-            document.getElementById('local').value = result.local;
-        }
-        if (result.qe !== undefined) {
-            document.getElementById('qe').value = result.qe;
-        }
-        if (result.prod !== undefined) {
-            document.getElementById('prod').value = result.prod;
-        }
-    });
-});
-
-function getURLs(callback) {
-    chrome.storage.local.get(['local', 'qe', 'prod'], function(result) {
-        callback(result);
-    });
-}
-
 function sendMessageToContentScript(value) {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {value});
+        if (!tabs || !tabs[0]) return;
+        try {
+            chrome.tabs.sendMessage(tabs[0].id, {value});
+        } catch (e) {
+            // ignore; content script may not be injected on some pages
+        }
     });
 }
