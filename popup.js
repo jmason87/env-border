@@ -1,10 +1,6 @@
-// Popup logic: read/save settings, toggle enabled state, and notify content script
-
 function isNonEmptyString(s) {
     return typeof s === 'string' && s.trim().length > 0;
 }
-
-// (preview/domain-matching helpers removed from popup — content script performs matching)
 
 document.addEventListener('DOMContentLoaded', function() {
     const toggleBtn = document.getElementById('toggleBtn');
@@ -49,10 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
             prod: document.getElementById('prod').value.trim()
         };
         chrome.storage.local.set(data, function() {
-            // show saved indicator briefly
             saveStatus.hidden = false;
             setTimeout(function() { saveStatus.hidden = true; }, 1500);
-            // notify active tab with updated URLs and current extensionEnabled value
             chrome.storage.local.get(['extensionEnabled'], function(r) {
                 sendMessageToContentScript({extensionEnabled: r.extensionEnabled, ...data});
             });
