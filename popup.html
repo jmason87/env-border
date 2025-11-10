@@ -6,43 +6,47 @@
     <title>Extension Popup</title>
     <link rel="stylesheet" href="popup.css">
 </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Env Border</title>
+        <link rel="stylesheet" href="popup.css">
+</head>
 <body>
-    <h1>Env Border</h1>
-    <button id="toggleExtension"></button>
-    <p>You can set your different environment domains here. Click the save button to save the changes.
-        This extension will add a border to the browser window to indicate the environment you are currently in if the URL you're on includes the domain you've set here.
-    </p>
-    <hr>
+    <div class="card">
+        <header class="card-header">
+            <h1>Env Border</h1>
+            <div id="extStatus" class="status-pill">Disabled</div>
+        </header>
 
-    <p class="input-label">Local Domain</p> 
-    <div class="input-prefix">
-        <span>http://</span>
-        <input type="text" id="local" placeholder="Local Domain">
-    </div>
-    <hr> 
-    
-    <p class="input-label">Testing/QA Domain</p> 
-    <div class="input-prefix">
-        <span>https://</span>
-        <input type="text" id="qe" placeholder="QE Domain">
-    </div>
-    <hr> 
+        <form id="envForm">
+            <label class="input-label">Local Domain
+                <div class="input-prefix"><span>http://</span><input type="text" id="local" placeholder="local.example.com"></div>
+            </label>
 
-    <p class="input-label">Staging Domain</p> 
-    <div class="input-prefix">
-        <span>https://</span>
-        <input type="text" id="staging" placeholder="Staging Domain">
-    </div>
-    <hr> 
-    
-    <p class="input-label">Prod Domain</p>
-    <div class="input-prefix">
-        <span>https://</span>
-        <input type="text" id="prod" placeholder="Prod Domain">
-    </div>
-    <hr>
+            <label class="input-label">Testing/QA Domain
+                <div class="input-prefix"><span>https://</span><input type="text" id="qe" placeholder="qa.example.com"></div>
+            </label>
 
-    <button id="save">Save</button>
+            <label class="input-label">Staging Domain
+                <div class="input-prefix"><span>https://</span><input type="text" id="staging" placeholder="staging.example.com"></div>
+            </label>
+
+            <label class="input-label">Prod Domain
+                <div class="input-prefix"><span>https://</span><input type="text" id="prod" placeholder="example.com"></div>
+            </label>
+
+            <div class="actions">
+                <button type="button" id="toggleBtn" class="btn toggle">Enable Extension</button>
+                <button type="button" id="saveBtn" class="btn primary">Save</button>
+            </div>
+
+            <div id="saveStatus" class="save-status" aria-live="polite" hidden>Saved ✓</div>
+        </form>
+    </div>
+
     <script src="popup.js"></script>
 </body>
 </html>
