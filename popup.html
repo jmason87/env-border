@@ -23,19 +23,27 @@
 
         <form id="envForm">
             <label class="input-label">Local Domain
-                <div class="input-prefix"><span>http://</span><input type="text" id="local" placeholder="local.example.com"></div>
+                <div class="input-prefix" data-env="local">
+                    <span>http://</span><input type="text" id="local" placeholder="local.example.com">
+                </div>
             </label>
 
             <label class="input-label">Testing/QA Domain
-                <div class="input-prefix"><span>https://</span><input type="text" id="qe" placeholder="qa.example.com"></div>
+                <div class="input-prefix" data-env="qe">
+                    <span>https://</span><input type="text" id="qe" placeholder="qa.example.com">
+                </div>
             </label>
 
             <label class="input-label">Staging Domain
-                <div class="input-prefix"><span>https://</span><input type="text" id="staging" placeholder="staging.example.com"></div>
+                <div class="input-prefix" data-env="staging">
+                    <span>https://</span><input type="text" id="staging" placeholder="staging.example.com">
+                </div>
             </label>
 
             <label class="input-label">Prod Domain
-                <div class="input-prefix"><span>https://</span><input type="text" id="prod" placeholder="example.com"></div>
+                <div class="input-prefix" data-env="prod">
+                    <span>https://</span><input type="text" id="prod" placeholder="example.com">
+                </div>
             </label>
 
             <div class="actions">

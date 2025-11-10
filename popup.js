@@ -24,8 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isNonEmptyString(result.qe)) document.getElementById('qe').value = result.qe;
         if (isNonEmptyString(result.staging)) document.getElementById('staging').value = result.staging;
         if (isNonEmptyString(result.prod)) document.getElementById('prod').value = result.prod;
-
-        // no preview — UI updated above and content script will receive messages
     });
 
     toggleBtn.addEventListener('click', function() {
